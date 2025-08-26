@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import ProfessionModal from "@/components/ProfessionModal";
+import FeedbackForm from "@/components/FeedbackForm";
 
 export default function Index() {
+  const [selectedProfession, setSelectedProfession] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const heroAnimation = useScrollAnimation();
+  const aboutAnimation = useScrollAnimation();
+  const professionsAnimation = useScrollAnimation();
+  const admissionAnimation = useScrollAnimation();
+  const contactAnimation = useScrollAnimation();
+
   const professions = [
     {
       title: "Программист",
@@ -11,7 +23,11 @@ export default function Index() {
       duration: "3.5 года",
       level: "Базовая подготовка",
       demand: "Высокий спрос",
-      icon: "Code2"
+      icon: "Code2",
+      subjects: ["JavaScript", "Python", "React", "Базы данных", "Алгоритмы", "Веб-разработка"],
+      skills: ["Создание веб-сайтов", "Мобильные приложения", "Работа с базами данных", "Командная разработка", "Тестирование кода", "Решение алгоритмических задач"],
+      salary: "80-150 тыс. руб.",
+      employment: ["IT-компании", "Банки", "Стартапы", "Фриланс", "Государственные учреждения", "Телеком компании"]
     },
     {
       title: "Дизайнер",
@@ -19,7 +35,11 @@ export default function Index() {
       duration: "3 года",
       level: "Углубленная подготовка", 
       demand: "Растущий спрос",
-      icon: "Palette"
+      icon: "Palette",
+      subjects: ["Photoshop", "Illustrator", "Figma", "Типографика", "Композиция", "Цветоведение"],
+      skills: ["UI/UX дизайн", "Брендинг", "Веб-дизайн", "Создание логотипов", "Работа с клиентами", "Презентация проектов"],
+      salary: "60-120 тыс. руб.",
+      employment: ["Дизайн-студии", "Рекламные агентства", "IT-компании", "Издательства", "Телевидение", "Фриланс"]
     },
     {
       title: "Медсестра",
@@ -27,7 +47,11 @@ export default function Index() {
       duration: "2.5 года",
       level: "Базовая подготовка",
       demand: "Очень высокий спрос",
-      icon: "Heart"
+      icon: "Heart",
+      subjects: ["Анатомия", "Сестринское дело", "Фармакология", "Гигиена", "Первая помощь", "Психология"],
+      skills: ["Уход за пациентами", "Инъекции и процедуры", "Работа с медоборудованием", "Ведение документации", "Экстренная помощь", "Работа в команде"],
+      salary: "45-80 тыс. руб.",
+      employment: ["Больницы", "Поликлиники", "Частные клиники", "Санатории", "Скорая помощь", "Домашний уход"]
     },
     {
       title: "Повар",
@@ -35,7 +59,11 @@ export default function Index() {
       duration: "2 года",
       level: "Базовая подготовка",
       demand: "Стабильный спрос",
-      icon: "ChefHat"
+      icon: "ChefHat",
+      subjects: ["Кулинария", "Технология приготовления", "Санитария", "Калькуляция", "Товароведение", "Диетология"],
+      skills: ["Приготовление блюд", "Работа с ножами", "Планирование меню", "Контроль качества", "Управление кухней", "Креативность в подаче"],
+      salary: "40-100 тыс. руб.",
+      employment: ["Рестораны", "Кафе", "Отели", "Кейтеринг", "Столовые", "Частный повар"]
     },
     {
       title: "Механик",
@@ -43,7 +71,11 @@ export default function Index() {
       duration: "3 года",
       level: "Углубленная подготовка",
       demand: "Высокий спрос",
-      icon: "Wrench"
+      icon: "Wrench",
+      subjects: ["Автомеханика", "Электрооборудование", "Диагностика", "Материаловедение", "Слесарное дело", "ТО и ремонт"],
+      skills: ["Диагностика неисправностей", "Ремонт двигателей", "Работа с инструментом", "Чтение схем", "Сварочные работы", "Компьютерная диагностика"],
+      salary: "50-120 тыс. руб.",
+      employment: ["Автосервисы", "Дилерские центры", "Транспортные компании", "Заводы", "Собственный бизнес", "Автопарки"]
     },
     {
       title: "Экономист",
@@ -51,7 +83,11 @@ export default function Index() {
       duration: "3.5 года",
       level: "Углубленная подготовка",
       demand: "Средний спрос",
-      icon: "TrendingUp"
+      icon: "TrendingUp",
+      subjects: ["Экономическая теория", "Бухучет", "Финансы", "Статистика", "Менеджмент", "1С:Предприятие"],
+      skills: ["Финансовый анализ", "Планирование бюджета", "Работа с отчетностью", "Налоговое планирование", "Управление проектами", "Аналитическое мышление"],
+      salary: "50-100 тыс. руб.",
+      employment: ["Банки", "Консалтинговые фирмы", "Промышленные предприятия", "Государственные организации", "Торговые компании", "Малый бизнес"]
     }
   ];
 
@@ -110,7 +146,12 @@ export default function Index() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-college-orange via-college-blue to-college-turquoise">
+      <section 
+        ref={heroAnimation.ref}
+        className={`relative overflow-hidden bg-gradient-to-br from-college-orange via-college-blue to-college-turquoise transition-all duration-1000 transform ${
+          heroAnimation.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-80'
+        }`}
+      >
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative container mx-auto px-4 py-24 md:py-32">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -170,7 +211,13 @@ export default function Index() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-college-gray">
+      <section 
+        id="about" 
+        ref={aboutAnimation.ref}
+        className={`py-20 bg-college-gray transition-all duration-1000 transform ${
+          aboutAnimation.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-college-dark mb-4">
@@ -202,7 +249,13 @@ export default function Index() {
       </section>
 
       {/* Professions Section */}
-      <section id="professions" className="py-20 bg-white">
+      <section 
+        id="professions" 
+        ref={professionsAnimation.ref}
+        className={`py-20 bg-white transition-all duration-1000 transform ${
+          professionsAnimation.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-college-dark mb-4">
@@ -242,7 +295,13 @@ export default function Index() {
                     </div>
                   </div>
                   
-                  <Button className="w-full bg-gradient-to-r from-college-orange to-college-blue text-white hover:opacity-90 transition-opacity">
+                  <Button 
+                    onClick={() => {
+                      setSelectedProfession(profession);
+                      setIsModalOpen(true);
+                    }}
+                    className="w-full bg-gradient-to-r from-college-orange to-college-blue text-white hover:opacity-90 transition-opacity"
+                  >
                     Узнать больше
                   </Button>
                 </CardContent>
@@ -253,7 +312,13 @@ export default function Index() {
       </section>
 
       {/* Admission Section */}
-      <section id="admission" className="py-20 bg-gradient-to-r from-college-blue to-college-turquoise">
+      <section 
+        id="admission" 
+        ref={admissionAnimation.ref}
+        className={`py-20 bg-gradient-to-r from-college-blue to-college-turquoise transition-all duration-1000 transform ${
+          admissionAnimation.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center text-white mb-16">
             <h2 className="text-4xl font-bold mb-4">
@@ -351,8 +416,30 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Feedback Section */}
+      <section className="py-20 bg-college-gray">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-college-dark mb-4">
+              Оставь заявку
+            </h2>
+            <p className="text-xl text-gray-600">
+              Мы поможем с выбором профессии и поступлением
+            </p>
+          </div>
+          
+          <FeedbackForm />
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contacts" className="py-20 bg-white">
+      <section 
+        id="contacts" 
+        ref={contactAnimation.ref}
+        className={`py-20 bg-white transition-all duration-1000 transform ${
+          contactAnimation.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-college-dark mb-4">
@@ -445,6 +532,18 @@ export default function Index() {
           </div>
         </div>
       </footer>
+      
+      {/* Profession Modal */}
+      {selectedProfession && (
+        <ProfessionModal 
+          profession={selectedProfession}
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedProfession(null);
+          }}
+        />
+      )}
     </div>
   );
 }
