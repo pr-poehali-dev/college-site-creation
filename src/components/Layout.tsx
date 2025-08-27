@@ -50,9 +50,21 @@ export default function Layout({ children, currentPage }: LayoutProps) {
               ))}
             </div>
 
-            <Button className="bg-gradient-to-r from-college-orange to-college-blue text-white hover:opacity-90 transition-opacity">
-              Подать заявку
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => window.location.href = '/admin/login'}
+                className="border-college-orange text-college-orange hover:bg-college-orange hover:text-white"
+              >
+                <Icon name="Settings" className="mr-2" size={16} />
+                Админ
+              </Button>
+              
+              <Button className="bg-gradient-to-r from-college-orange to-college-blue text-white hover:opacity-90 transition-opacity">
+                Подать заявку
+              </Button>
+            </div>
           </div>
         </div>
       </nav>

@@ -6,6 +6,7 @@ import Icon from "@/components/ui/icon";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ProfessionModal from "@/components/ProfessionModal";
 import FeedbackForm from "@/components/FeedbackForm";
+import NewsSection from "@/components/NewsSection";
 
 export default function Index() {
   const [selectedProfession, setSelectedProfession] = useState<any>(null);
@@ -415,6 +416,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* News Section */}
+      <NewsSection />
 
       {/* Feedback Section */}
       <section className="py-20 bg-college-gray">
